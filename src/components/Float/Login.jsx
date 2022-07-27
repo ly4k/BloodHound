@@ -1,7 +1,7 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Button} from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import clsx from 'clsx';
-import {motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 import neo4j from 'neo4j-driver';
 import semver from 'semver'
 
@@ -108,9 +108,9 @@ const Login = () => {
 
         let tempUrl = url.replace('bolt://', 'http://').replace('7687', '7474');
         let versionRecord;
-        try{
+        try {
             versionRecord = await session.run('CALL dbms.components() YIELD versions RETURN versions[0] AS version')
-        }catch (error) {
+        } catch (error) {
             console.log(error);
             if (error.message.includes('authentication failure')) {
                 setLoginEnabled(true);
@@ -171,7 +171,7 @@ const Login = () => {
         }
 
         let version = versionRecord.records[0].get('version')
-        if (!semver.gte(version, '4.4.0')){
+        if (!semver.gte(version, '4.4.0')) {
             setLoginEnabled(false);
             setLoginRunning(false);
 
@@ -180,7 +180,7 @@ const Login = () => {
             icon.addClass(
                 'fa fa-times-circle red-icon-color form-control-feedback'
             );
-            icon.attr('data-original-title', 'Neo4j Version is too low. Upgrade to >= 4.4.0')
+            icon.attr('data-original-title', 'Neo4j Version is too low. Upgrade to >= 4.4.0 or use BloodHound 4.1.1 (still with PKI support)')
                 .tooltip('fixTitle')
                 .tooltip('show');
 
@@ -211,22 +211,22 @@ const Login = () => {
         global.driver = neo4j.driver(
             url,
             neo4j.auth.basic(user, password), {
-                disableLosslessIntegers: true,
-                connectionTimeout: 120000,
-            }
+            disableLosslessIntegers: true,
+            connectionTimeout: 120000,
+        }
         )
 
         session = global.driver.session()
 
         //Migrate GpLink to GPLink
-        try{
+        try {
             await session.run(`MATCH (n:GPO)-[r:GpLink]->(m) 
             CALL {
                 WITH n, r, m
                 CREATE (n)-[:GPLink {isacl: false, enforced:r.enforced}]->(m)
                 DELETE r
             } IN TRANSACTIONS OF 500 ROWS`)
-        }catch (e) {
+        } catch (e) {
             console.error(e)
         }
 

@@ -20,6 +20,8 @@ export const ADLabels = {
     Computer: 'Computer',
     OU: 'OU',
     GPO: 'GPO',
+    CertificateTemplate: 'CertificateTemplate',
+    CA: 'CA',
     Domain: 'Domain',
     Container: 'Container',
     MemberOf: 'MemberOf',
@@ -34,6 +36,7 @@ export const ADLabels = {
     Contains: 'Contains',
     GPLink: 'GPLink',
     TrustedBy: 'TrustedBy',
+    EnabledBy: 'EnabledBy',
 };
 
 const AzureApplicationAdministratorRoleId =
@@ -162,6 +165,65 @@ export function buildGroupJsonNew(chunk) {
             insertNew(queries, format, props);
         }
     }
+    return queries;
+}
+
+/**
+ *
+ * @param {Array.<Group>} chunk
+ * @returns {{}}
+ */
+export function buildTemplateJsonNew(chunk) {
+    let queries = {};
+
+    queries.properties = {};
+    queries.properties.statement = PROP_QUERY.format(ADLabels.CertificateTemplate);
+    queries.properties.props = [];
+
+    for (let template of chunk) {
+        let properties = template.Properties;
+        let identifier = template.ObjectIdentifier;
+        let aces = template.Aces;
+        let cas = template.cas_ids;
+
+        queries.properties.props.push({ objectid: identifier, map: properties });
+
+        processAceArrayNew(aces, identifier, ADLabels.CertificateTemplate, queries);
+
+        if (cas) {
+            let format = [ADLabels.CertificateTemplate, ADLabels.CA, ADLabels.EnabledBy, NON_ACL_PROPS];
+            let props = cas.map((ca) => {
+                return { source: identifier, target: ca };
+            });
+            insertNew(queries, format, props);
+        }
+    }
+
+    return queries;
+}
+
+/**
+ *
+ * @param {Array.<Group>} chunk
+ * @returns {{}}
+ */
+export function buildCaJsonNew(chunk) {
+    let queries = {};
+
+    queries.properties = {};
+    queries.properties.statement = PROP_QUERY.format(ADLabels.CA);
+    queries.properties.props = [];
+
+    for (let ca of chunk) {
+        let properties = ca.Properties;
+        let identifier = ca.ObjectIdentifier;
+        let aces = ca.Aces;
+
+        queries.properties.props.push({ objectid: identifier, map: properties });
+
+        processAceArrayNew(aces, identifier, ADLabels.CA, queries);
+    }
+
     return queries;
 }
 
@@ -1650,9 +1712,9 @@ export function convertAzureRoleAssignment(data, ingestionData) {
     for (let roleAssignment of data.roleAssignments) {
         if (
             roleAssignment.roleDefinitionId ===
-                AzureApplicationAdministratorRoleId ||
+            AzureApplicationAdministratorRoleId ||
             roleAssignment.roleDefinitionId ===
-                AzureCloudApplicationAdministratorRoleId
+            AzureCloudApplicationAdministratorRoleId
         ) {
             if (roleAssignment.directoryScopeId === '/') {
                 insertNewAzureRel(
@@ -1670,7 +1732,7 @@ export function convertAzureRoleAssignment(data, ingestionData) {
             } else {
                 let relType =
                     roleAssignment.roleDefinitionId ===
-                    AzureApplicationAdministratorRoleId
+                        AzureApplicationAdministratorRoleId
                         ? AzureLabels.AppAdmin
                         : AzureLabels.CloudAppAdmin;
                 insertNewAzureRel(

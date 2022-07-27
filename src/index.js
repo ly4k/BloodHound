@@ -142,11 +142,23 @@ global.appStore = {
                 scale: 1.25,
                 color: '#FFAA00',
             },
+            CA: {
+                font: "'Font Awesome 5 Free'",
+                content: '\uF19C',
+                scale: 1.25,
+                color: '#FFAA00',
+            },
+            CertificateTemplate: {
+                font: "'Font Awesome 5 Free'",
+                content: '\uF2C2',
+                scale: 1.25,
+                color: '#73E6A1',
+            },
             Container: {
                 font: "'Font Awesome 5 Free'",
                 content: '\uF466',
                 scale: 1.25,
-                color: '#F79A78',
+                color: '#F7D078',
             },
             GPO: {
                 font: "'Font Awesome 5 Free'",

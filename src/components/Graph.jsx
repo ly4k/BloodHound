@@ -1272,8 +1272,8 @@ class GraphContainer extends Component {
                 if (!validSettings[rescaleSettings[i]])
                     throw new Error(
                         'The rescale setting "' +
-                            rescaleSettings[i] +
-                            '" is not recognized.'
+                        rescaleSettings[i] +
+                        '" is not recognized.'
                     );
 
             const np = ~rescaleSettings.indexOf('nodePosition'),
@@ -1289,13 +1289,13 @@ class GraphContainer extends Component {
                 scale =
                     settings('scalingMode') === 'outside'
                         ? Math.max(
-                              w / Math.max(maxX - minX, 1),
-                              h / Math.max(maxY - minY, 1)
-                          )
+                            w / Math.max(maxX - minX, 1),
+                            h / Math.max(maxY - minY, 1)
+                        )
                         : Math.min(
-                              w / Math.max(maxX - minX, 1),
-                              h / Math.max(maxY - minY, 1)
-                          );
+                            w / Math.max(maxX - minX, 1),
+                            h / Math.max(maxY - minY, 1)
+                        );
 
                 _this.graph.currentScale = scale;
                 /**
@@ -1319,13 +1319,13 @@ class GraphContainer extends Component {
                 scale =
                     settings('scalingMode') === 'outside'
                         ? Math.max(
-                              w / Math.max(maxX - minX, 1),
-                              h / Math.max(maxY - minY, 1)
-                          )
+                            w / Math.max(maxX - minX, 1),
+                            h / Math.max(maxY - minY, 1)
+                        )
                         : Math.min(
-                              w / Math.max(maxX - minX, 1),
-                              h / Math.max(maxY - minY, 1)
-                          );
+                            w / Math.max(maxX - minX, 1),
+                            h / Math.max(maxY - minY, 1)
+                        );
                 _this.graph.currentScale = scale;
             }
 

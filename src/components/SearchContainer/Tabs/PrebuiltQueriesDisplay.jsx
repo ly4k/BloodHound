@@ -174,15 +174,19 @@ const PrebuiltQueriesDisplay = () => {
                         title='Refresh Queries'
                     />
                 </h5>
-                {Object.keys(custom).length === 0 && (
-                    <div>No user defined queries.</div>
-                )}
-                {Object.keys(custom).length > 0 &&
+                {
+                    Object.keys(custom).length === 0 && (
+                        <div>No user defined queries.</div>
+                    )
+                }
+                {
+                    Object.keys(custom).length > 0 &&
                     createQuerieSections(custom).map((a) => {
                         return a;
-                    })}
-            </div>
-        </div>
+                    })
+                }
+            </div >
+        </div >
     );
 };
 

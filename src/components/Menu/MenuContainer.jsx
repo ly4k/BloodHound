@@ -37,6 +37,8 @@ const IngestFuncMap = {
     ous: NewIngestion.buildOuJsonNew,
     gpos: NewIngestion.buildGpoJsonNew,
     containers: NewIngestion.buildContainerJsonNew,
+    templates: NewIngestion.buildTemplateJsonNew,
+    cas: NewIngestion.buildCaJsonNew,
     azure: NewIngestion.convertAzureData,
 };
 
@@ -487,9 +489,9 @@ const MenuContainer = () => {
                     if (dcSyncPrincipals.length > 0) {
                         console.log(
                             'Found DC Sync principals: ' +
-                                dcSyncPrincipals.join(', ') +
-                                ' in domain ' +
-                                domainId
+                            dcSyncPrincipals.join(', ') +
+                            ' in domain ' +
+                            domainId
                         );
                         await session.run(
                             'UNWIND $syncers AS sync MATCH (n:Base {objectid: sync}) MATCH (m:Domain {objectid: $domainid}) MERGE (n)-[:DCSync {isacl: true, isinherited: false}]->(m)',
@@ -508,9 +510,9 @@ const MenuContainer = () => {
                     if (syncsLapsPrincipals.length > 0) {
                         console.log(
                             'Found SyncLAPSPassword principals: ' +
-                                syncsLapsPrincipals.join(', ') +
-                                ' in domain ' +
-                                domainId
+                            syncsLapsPrincipals.join(', ') +
+                            ' in domain ' +
+                            domainId
                         );
                         await session.run(
                             `UNWIND $syncers AS sync MATCH (n:Base {objectid: sync}) MATCH (m:Computer {domainsid: $domainid, haslaps:true}) 
@@ -612,8 +614,7 @@ const MenuContainer = () => {
                 ),
             params: null,
             log: (result) =>
-                `Deleted ${
-                    result.summary.counters.updates().relationshipsDeleted
+                `Deleted ${result.summary.counters.updates().relationshipsDeleted
                 } post-processed rels`,
         },
         {
@@ -629,8 +630,7 @@ const MenuContainer = () => {
                         } IN TRANSACTIONS OF {} ROWS`.format(batchSize),
             params: null,
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZGlobalAdmin Edges`,
         },
         {
@@ -646,8 +646,7 @@ const MenuContainer = () => {
                         } IN TRANSACTIONS OF {} ROWS`.format(batchSize),
             params: null,
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZPrivilegedRoleAdmin Edges`,
         },
         {
@@ -678,8 +677,7 @@ const MenuContainer = () => {
                 ],
             },
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZResetPassword Edges`,
         },
         {
@@ -702,8 +700,7 @@ const MenuContainer = () => {
                 ],
             },
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZResetPassword Edges`,
         },
         {
@@ -735,8 +732,7 @@ const MenuContainer = () => {
                 ],
             },
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZResetPassword Edges`,
         },
         {
@@ -768,8 +764,7 @@ const MenuContainer = () => {
                 ],
             },
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZResetPassword Edges`,
         },
         {
@@ -796,8 +791,7 @@ const MenuContainer = () => {
                 ],
             },
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZResetPassword Edges`,
         },
         {
@@ -828,8 +822,7 @@ const MenuContainer = () => {
                 ],
             },
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZResetPassword Edges`,
         },
         {
@@ -848,8 +841,7 @@ const MenuContainer = () => {
                         } IN TRANSACTIONS OF {} ROWS`.format(batchSize),
             params: null,
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZAddSecret Edges`,
         },
         {
@@ -866,8 +858,7 @@ const MenuContainer = () => {
                         } IN TRANSACTIONS OF {} ROWS`.format(batchSize),
             params: null,
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZExecuteCommand Edges`,
         },
         {
@@ -890,8 +881,7 @@ const MenuContainer = () => {
                 ],
             },
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZAddMembers Edges`,
         },
         {
@@ -913,8 +903,7 @@ const MenuContainer = () => {
                 ],
             },
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZAddMembers Edges`,
         },
         {
@@ -938,8 +927,7 @@ const MenuContainer = () => {
                 ],
             },
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZAddOwner Edges`,
         },
         {
@@ -963,8 +951,7 @@ const MenuContainer = () => {
                 ],
             },
             log: (result) =>
-                `Created ${
-                    result.summary.counters.updates().relationshipsCreated
+                `Created ${result.summary.counters.updates().relationshipsCreated
                 } AZAddOwner Edges`,
         },
     ];
@@ -1022,7 +1009,7 @@ const MenuContainer = () => {
         );
     };
 
-    const cancelUpload = () => {};
+    const cancelUpload = () => { };
 
     const aboutClick = () => {
         emitter.emit('showAbout');

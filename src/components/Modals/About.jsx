@@ -71,22 +71,11 @@ const About = () => {
                         href='#'
                         onClick={() => {
                             openLink(
-                                'https://www.github.com/BloodHoundAD/BloodHound'
+                                'https://www.github.com/ly4k/BloodHound'
                             );
                         }}
                     >
-                        https://www.github.com/BloodHoundAD/BloodHound
-                    </a>
-                </h5>
-                <h5>
-                    BloodHound Slack:{' '}
-                    <a
-                        href='#'
-                        onClick={() => {
-                            openLink('https://bloodhoundgang.herokuapp.com/');
-                        }}
-                    >
-                        https://bloodhoundgang.herokuapp.com/
+                        https://www.github.com/ly4k/BloodHound
                     </a>
                 </h5>
                 <h5>
@@ -98,6 +87,15 @@ const About = () => {
                         }}
                     >
                         The BloodHound Enterprise Team
+                    </a>
+                    ,{' '}
+                    <a
+                        href='#'
+                        onClick={() => {
+                            openLink('https://www.twitter.com/ly4k_');
+                        }}
+                    >
+                        Oliver Lyak (@ly4k_)
                     </a>
                 </h5>
                 <h5>
@@ -127,6 +125,17 @@ const About = () => {
                         }}
                     >
                         @harmj0y
+                    </a>
+                </h5>
+                <h5>
+                    Modified by:{' '}
+                    <a
+                        href='#'
+                        onClick={() => {
+                            openLink('https://www.twitter.com/ly4k_');
+                        }}
+                    >
+                        @ly4k_
                     </a>
                 </h5>
                 <br />
