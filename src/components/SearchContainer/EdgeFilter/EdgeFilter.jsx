@@ -1,6 +1,6 @@
-import React, {useContext} from 'react';
-import {motion} from 'framer-motion';
-import {AppContext} from '../../../AppContext';
+import React, { useContext } from 'react';
+import { motion } from 'framer-motion';
+import { AppContext } from '../../../AppContext';
 import styles from './EdgeFilter.module.css';
 import EdgeFilterCheck from './EdgeFilterCheck';
 import clsx from 'clsx';
@@ -104,6 +104,21 @@ const EdgeFilter = ({ open }) => {
                     <EdgeFilterCheck name='AllowedToAct' />
                     <EdgeFilterCheck name='SQLAdmin' />
                     <EdgeFilterCheck name='HasSIDHistory' />
+                    <EdgeFilterSection
+                        title='PKI'
+                        sectionName='pki'
+                        edges={[
+                            'Enroll',
+                            'AutoEnroll',
+                            'ManageCa',
+                            'ManageCertificates',
+                            'EnabledBy',
+                        ]}
+                    />
+                    <EdgeFilterCheck name='Enroll' />
+                    <EdgeFilterCheck name='AutoEnroll' />
+                    <EdgeFilterCheck name='ManageCa' />
+                    <EdgeFilterCheck name='ManageCertificates' />
                 </div>
                 <div>
                     <EdgeFilterSection

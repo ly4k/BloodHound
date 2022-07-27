@@ -4,6 +4,8 @@ const LABEL_GROUP = 'Group'
 const LABEL_USER = 'User'
 const LABEL_COMPUTER = 'Computer'
 const LABEL_OU = 'OU'
+const LABEL_CA = 'CA'
+const LABEL_TEMPLATE = 'CertificateTemplate'
 const LABEL_GPO = 'GPO'
 const LABEL_DOMAIN = 'Domain'
 const LABEL_CONTAINER = 'Container'
@@ -20,6 +22,7 @@ const EDGE_HAS_SID_HISTORY = 'HasSIDHistory'
 const EDGE_CONTAINS = 'Contains'
 const EDGE_GP_LINK = 'GpLink'
 const EDGE_TRUSTED_BY = 'TrustedBy'
+const EDGE_ENABLED_BY = 'EnabledBy'
 
 const TRUST_DIRECTION_INBOUND = 'Inbound'
 const TRUST_DIRECTION_OUTBOUND = 'Outbound'
@@ -66,6 +69,65 @@ export function buildGroupJsonNew(chunk) {
             insertNew(queries, format, props);
         }
     }
+    return queries;
+}
+
+/**
+ *
+ * @param {Array.<Group>} chunk
+ * @returns {{}}
+ */
+export function buildTemplateJsonNew(chunk) {
+    let queries = {};
+
+    queries.properties = {};
+    queries.properties.statement = PROP_QUERY.format(LABEL_TEMPLATE);
+    queries.properties.props = [];
+
+    for (let template of chunk) {
+        let properties = template.Properties;
+        let identifier = template.ObjectIdentifier;
+        let aces = template.Aces;
+        let cas = template.cas_ids;
+
+        queries.properties.props.push({ source: identifier, map: properties });
+
+        processAceArrayNew(aces, identifier, LABEL_TEMPLATE, queries);
+
+        if (cas) {
+            let format = [LABEL_TEMPLATE, LABEL_CA, EDGE_ENABLED_BY, NON_ACL_PROPS];
+            let props = cas.map((ca) => {
+                return { source: identifier, target: ca };
+            });
+            insertNew(queries, format, props);
+        }
+    }
+
+    return queries;
+}
+
+/**
+ *
+ * @param {Array.<Group>} chunk
+ * @returns {{}}
+ */
+export function buildCaJsonNew(chunk) {
+    let queries = {};
+
+    queries.properties = {};
+    queries.properties.statement = PROP_QUERY.format(LABEL_CA);
+    queries.properties.props = [];
+
+    for (let ca of chunk) {
+        let properties = ca.Properties;
+        let identifier = ca.ObjectIdentifier;
+        let aces = ca.Aces;
+
+        queries.properties.props.push({ source: identifier, map: properties });
+
+        processAceArrayNew(aces, identifier, LABEL_CA, queries);
+    }
+
     return queries;
 }
 
@@ -294,10 +356,10 @@ export function buildContainerJsonNew(chunk) {
         let format = [LABEL_CONTAINER, '', EDGE_CONTAINS, NON_ACL_PROPS]
         let grouped = groupBy(children, GROUP_OBJECT_TYPE)
 
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[1] = objectType
             let props = grouped[objectType].map((child) => {
-                return {source: identifier, target: child.ObjectIdentifier}
+                return { source: identifier, target: child.ObjectIdentifier }
             })
 
             insertNew(queries, format, props)
@@ -335,10 +397,10 @@ export function buildOuJsonNew(chunk) {
         let format = [LABEL_OU, '', EDGE_CONTAINS, NON_ACL_PROPS]
         let grouped = groupBy(children, GROUP_OBJECT_TYPE)
 
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[1] = objectType
             let props = grouped[objectType].map((child) => {
-                return {source: identifier, target: child.ObjectIdentifier}
+                return { source: identifier, target: child.ObjectIdentifier }
             })
 
             insertNew(queries, format, props)
@@ -358,11 +420,11 @@ export function buildOuJsonNew(chunk) {
 
         format = ['', LABEL_COMPUTER, EDGE_ADMIN_TO, '{isacl: false, fromgpo: true}']
         grouped = groupBy(ou.GPOChanges.LocalAdmins, GROUP_OBJECT_TYPE)
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[0] = objectType
             let flattened = computers.flatMap((computer) => {
                 return grouped[objectType].map((localPrincipal) => {
-                    return {source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier}
+                    return { source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier }
                 })
             })
 
@@ -371,11 +433,11 @@ export function buildOuJsonNew(chunk) {
 
         format = ['', LABEL_COMPUTER, EDGE_CAN_RDP, '{isacl: false, fromgpo: true}']
         grouped = groupBy(ou.GPOChanges.RemoteDesktopUsers, GROUP_OBJECT_TYPE)
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[0] = objectType
             let flattened = computers.flatMap((computer) => {
                 return grouped[objectType].map((localPrincipal) => {
-                    return {source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier}
+                    return { source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier }
                 })
             })
 
@@ -384,11 +446,11 @@ export function buildOuJsonNew(chunk) {
 
         format = ['', LABEL_COMPUTER, EDGE_EXECUTE_DCOM, '{isacl: false, fromgpo: true}']
         grouped = groupBy(ou.GPOChanges.DcomUsers, GROUP_OBJECT_TYPE)
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[0] = objectType
             let flattened = computers.flatMap((computer) => {
                 return grouped[objectType].map((localPrincipal) => {
-                    return {source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier}
+                    return { source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier }
                 })
             })
 
@@ -397,11 +459,11 @@ export function buildOuJsonNew(chunk) {
 
         format = ['', LABEL_COMPUTER, EDGE_CAN_PSREMOTE, '{isacl: false, fromgpo: true}']
         grouped = groupBy(ou.GPOChanges.PSRemoteUsers, GROUP_OBJECT_TYPE)
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[0] = objectType
             let flattened = computers.flatMap((computer) => {
                 return grouped[objectType].map((localPrincipal) => {
-                    return {source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier}
+                    return { source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier }
                 })
             })
 
@@ -442,10 +504,10 @@ export function buildDomainJsonNew(chunk) {
         let format = [LABEL_DOMAIN, '', EDGE_CONTAINS, NON_ACL_PROPS]
         let grouped = groupBy(children, GROUP_OBJECT_TYPE)
 
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[1] = objectType
             let props = grouped[objectType].map((child) => {
-                return {source: identifier, target: child.ObjectIdentifier}
+                return { source: identifier, target: child.ObjectIdentifier }
             })
 
             insertNew(queries, format, props)
@@ -465,11 +527,11 @@ export function buildDomainJsonNew(chunk) {
 
         format = ['', LABEL_COMPUTER, EDGE_ADMIN_TO, '{isacl: false, fromgpo: true}']
         grouped = groupBy(domain.GPOChanges.LocalAdmins, GROUP_OBJECT_TYPE)
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[0] = objectType
             let flattened = computers.flatMap((computer) => {
                 return grouped[objectType].map((localPrincipal) => {
-                    return {source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier}
+                    return { source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier }
                 })
             })
 
@@ -478,11 +540,11 @@ export function buildDomainJsonNew(chunk) {
 
         format = ['', LABEL_COMPUTER, EDGE_CAN_RDP, '{isacl: false, fromgpo: true}']
         grouped = groupBy(domain.GPOChanges.RemoteDesktopUsers, GROUP_OBJECT_TYPE)
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[0] = objectType
             let flattened = computers.flatMap((computer) => {
                 return grouped[objectType].map((localPrincipal) => {
-                    return {source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier}
+                    return { source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier }
                 })
             })
 
@@ -491,11 +553,11 @@ export function buildDomainJsonNew(chunk) {
 
         format = ['', LABEL_COMPUTER, EDGE_EXECUTE_DCOM, '{isacl: false, fromgpo: true}']
         grouped = groupBy(domain.GPOChanges.DcomUsers, GROUP_OBJECT_TYPE)
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[0] = objectType
             let flattened = computers.flatMap((computer) => {
                 return grouped[objectType].map((localPrincipal) => {
-                    return {source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier}
+                    return { source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier }
                 })
             })
 
@@ -504,11 +566,11 @@ export function buildDomainJsonNew(chunk) {
 
         format = ['', LABEL_COMPUTER, EDGE_CAN_PSREMOTE, '{isacl: false, fromgpo: true}']
         grouped = groupBy(domain.GPOChanges.PSRemoteUsers, GROUP_OBJECT_TYPE)
-        for (let objectType in grouped){
+        for (let objectType in grouped) {
             format[0] = objectType
             let flattened = computers.flatMap((computer) => {
                 return grouped[objectType].map((localPrincipal) => {
-                    return {source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier}
+                    return { source: localPrincipal.ObjectIdentifier, target: computer.ObjectIdentifier }
                 })
             })
 

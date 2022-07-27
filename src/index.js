@@ -5,17 +5,17 @@ import ReactDOM from 'react-dom';
 
 import AppContainer from './AppContainer';
 import Login from './components/Float/Login';
-import {positions, Provider as AlertProvider, transitions} from 'react-alert';
+import { positions, Provider as AlertProvider, transitions } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 
-import {remote, shell} from 'electron';
-import {join} from 'path';
-import {existsSync, mkdirSync, writeFileSync} from 'fs';
+import { remote, shell } from 'electron';
+import { join } from 'path';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
 
 import ConfigStore from 'electron-store';
 
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import {EventEmitter2 as e} from 'eventemitter2';
+import { EventEmitter2 as e } from 'eventemitter2';
 
 const { app } = remote;
 
@@ -142,11 +142,23 @@ global.appStore = {
                 scale: 1.25,
                 color: '#FFAA00',
             },
+            CA: {
+                font: "'Font Awesome 5 Free'",
+                content: '\uF19C',
+                scale: 1.25,
+                color: '#FFAA00',
+            },
+            CertificateTemplate: {
+                font: "'Font Awesome 5 Free'",
+                content: '\uF2C2',
+                scale: 1.25,
+                color: '#73E6A1',
+            },
             Container: {
                 font: "'Font Awesome 5 Free'",
                 content: '\uF466',
                 scale: 1.25,
-                color: '#F79A78',
+                color: '#F7D078',
             },
             GPO: {
                 font: "'Font Awesome 5 Free'",

@@ -43,6 +43,12 @@ const SearchRow = ({ item, search }) => {
         case 'OU':
             icon.className = 'fa fa-sitemap';
             break;
+        case 'CA':
+            icon.className = 'fa fa-university';
+            break;
+        case 'CertificateTemplate':
+            icon.className = 'fa fa-id-card';
+            break;
         case 'Container':
             icon.className = 'fa fa-box'
             break

@@ -1,8 +1,8 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './DatabaseDataDisplay.module.css';
-import {Table} from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import DatabaseDataLabel from './Components/DatabaseDataLabel';
-import {AppContext} from '../../../AppContext';
+import { AppContext } from '../../../AppContext';
 import clsx from 'clsx';
 import CollapsibleSection from './Components/CollapsibleSection';
 
@@ -112,6 +112,20 @@ const DatabaseDataDisplay = () => {
                             }
                             index={index}
                             label={'Computers'}
+                        />
+                        <DatabaseDataLabel
+                            query={
+                                'MATCH (n:CertificateTemplate) RETURN count(n) AS count'
+                            }
+                            index={index}
+                            label={'Certificate Templates'}
+                        />
+                        <DatabaseDataLabel
+                            query={
+                                'MATCH (n:CA) RETURN count(n) AS count'
+                            }
+                            index={index}
+                            label={'Certificate Authorities'}
                         />
                         <DatabaseDataLabel
                             query={'MATCH (n:OU) RETURN count(n) AS count'}

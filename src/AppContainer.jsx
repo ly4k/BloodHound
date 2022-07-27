@@ -69,7 +69,12 @@ const fullEdgeList = [
     'AdminTo',
     'AddSelf',
     'WriteSPN',
-    'AddKeyCredentialLink'
+    'AddKeyCredentialLink',
+    'Enroll',
+    'AutoEnroll',
+    'ManageCa',
+    'ManageCertificates',
+    'EnabledBy',
 ];
 
 export default class AppContainer extends Component {

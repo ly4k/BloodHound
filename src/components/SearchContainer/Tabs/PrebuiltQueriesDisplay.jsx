@@ -40,7 +40,7 @@ const PrebuiltQueriesDisplay = () => {
                         query.name = "Unnamed Query"
                     }
                     if (!(query.category in y)) {
-                            y[query.category] = [];
+                        y[query.category] = [];
                     }
 
                     y[query.category].push(query);
@@ -72,8 +72,8 @@ const PrebuiltQueriesDisplay = () => {
                             y[el.category] = [];
                         }
                         y[el.category].push(el);
-                    } catch (e){
-                        alert("Queries Category Array Exception: "+e.message);
+                    } catch (e) {
+                        alert("Queries Category Array Exception: " + e.message);
                     }
                 });
 
@@ -96,9 +96,9 @@ const PrebuiltQueriesDisplay = () => {
     const editCustom = () => {
         exec(
             getCommandLine() +
-                ' "' +
-                join(app.getPath('userData'), '/customqueries.json') +
-                '"'
+            ' "' +
+            join(app.getPath('userData'), '/customqueries.json') +
+            '"'
         );
     };
 
@@ -108,14 +108,14 @@ const PrebuiltQueriesDisplay = () => {
 
     const createQuerieSections = (queryArray) => {
         let finalQueryElement = [];
-        
+
         for (let queryCategory in queryArray) {
             try {
                 finalQueryElement.push(
                     <CollapsibleSection header={queryCategory} key={queryCategory}>
                         <div className={styles.itemlist}>
                             <Table>
-                                <thead/>
+                                <thead />
                                 <tbody className='searchable'>
                                     {queryArray[queryCategory].map(function (a) { return <PrebuiltQueryNode key={a.name} info={a} />; })}
                                 </tbody>
@@ -127,7 +127,7 @@ const PrebuiltQueriesDisplay = () => {
             }
         }
 
-        emitter.emit('registerQueryCategories',queryArray);
+        emitter.emit('registerQueryCategories', queryArray);
         return finalQueryElement;
     }
 
@@ -143,7 +143,7 @@ const PrebuiltQueriesDisplay = () => {
                 {createQuerieSections(queries).map((a) => { return a })}
 
 
-            
+
                 <hr />
                 <h5>
                     Custom Queries
@@ -161,10 +161,10 @@ const PrebuiltQueriesDisplay = () => {
                         title='Refresh Queries'
                     />
                 </h5>
-                    {Object.keys(custom).length === 0 && <div>No user defined queries.</div>}
-                    {Object.keys(custom).length > 0 && (
-                        createQuerieSections(custom).map((a) => { return a })
-                    )}
+                {Object.keys(custom).length === 0 && <div>No user defined queries.</div>}
+                {Object.keys(custom).length > 0 && (
+                    createQuerieSections(custom).map((a) => { return a })
+                )}
             </div>
         </div>
     );

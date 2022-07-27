@@ -866,7 +866,7 @@ class GraphContainer extends Component {
                 }, 1500);
             },
             onCompleted: function () {
-                const graph = {nodes: [], edges: []};
+                const graph = { nodes: [], edges: [] };
                 $.each(nodes, function (node) {
                     graph.nodes.push(nodes[node]);
                 });
@@ -920,12 +920,12 @@ class GraphContainer extends Component {
         return edge;
     }
 
-    selectLabel(properties){
-        if (properties.hasOwnProperty("name")){
+    selectLabel(properties) {
+        if (properties.hasOwnProperty("name")) {
             return properties["name"];
-        }else if (properties.hasOwnProperty("azname")){
+        } else if (properties.hasOwnProperty("azname")) {
             return properties["azname"];
-        }else{
+        } else {
             return properties["objectid"]
         }
     }
@@ -1280,8 +1280,8 @@ class GraphContainer extends Component {
                 if (!validSettings[rescaleSettings[i]])
                     throw new Error(
                         'The rescale setting "' +
-                            rescaleSettings[i] +
-                            '" is not recognized.'
+                        rescaleSettings[i] +
+                        '" is not recognized.'
                     );
 
             const np = ~rescaleSettings.indexOf('nodePosition'),
@@ -1297,13 +1297,13 @@ class GraphContainer extends Component {
                 scale =
                     settings('scalingMode') === 'outside'
                         ? Math.max(
-                              w / Math.max(maxX - minX, 1),
-                              h / Math.max(maxY - minY, 1)
-                          )
+                            w / Math.max(maxX - minX, 1),
+                            h / Math.max(maxY - minY, 1)
+                        )
                         : Math.min(
-                              w / Math.max(maxX - minX, 1),
-                              h / Math.max(maxY - minY, 1)
-                          );
+                            w / Math.max(maxX - minX, 1),
+                            h / Math.max(maxY - minY, 1)
+                        );
 
                 _this.graph.currentScale = scale;
                 /**
@@ -1327,13 +1327,13 @@ class GraphContainer extends Component {
                 scale =
                     settings('scalingMode') === 'outside'
                         ? Math.max(
-                              w / Math.max(maxX - minX, 1),
-                              h / Math.max(maxY - minY, 1)
-                          )
+                            w / Math.max(maxX - minX, 1),
+                            h / Math.max(maxY - minY, 1)
+                        )
                         : Math.min(
-                              w / Math.max(maxX - minX, 1),
-                              h / Math.max(maxY - minY, 1)
-                          );
+                            w / Math.max(maxX - minX, 1),
+                            h / Math.max(maxY - minY, 1)
+                        );
                 _this.graph.currentScale = scale;
             }
 
