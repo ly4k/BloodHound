@@ -1,5 +1,4 @@
-[![Build](https://github.com/BloodHoundAD/BloodHound/actions/workflows/build.yml/badge.svg)](https://github.com/BloodHoundAD/BloodHound/actions/workflows/build.yml)
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/BloodHoundAD/BloodHound)](https://github.com/BloodHoundAD/BloodHound/releases/latest)
+This is a fork of [BloodHound](https://github.com/BloodHoundAD/BloodHound) with PKI nodes and edges for Certipy along with some minor personal improvements.
 
 # Getting Started with BloodHound
 
